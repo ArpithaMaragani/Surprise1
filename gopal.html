@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Love</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins','Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+color:white;
+}
+
+/* Backgrounds */
+#page1{background:linear-gradient(135deg,#926ed4,#d76d77,#ffaf7b);}
+#page2{background:linear-gradient(135deg,#5661b2,#b56b8b,#97ae45);}
+#page3{background:linear-gradient(135deg,#5f93a3,#5c86e7,#dcc9bb);}
+#page4{background:linear-gradient(135deg,#cd86c9,#7cb189,#d79871);}
+
+.page{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+opacity:0;
+pointer-events:none;
+transition:0.6s ease;
+padding:20px;
+}
+
+.page.active{
+opacity:1;
+pointer-events:auto;
+}
+
+.card{
+width:100%;
+max-width:380px;
+padding:28px 22px;
+border-radius:20px;
+text-align:center;
+background:rgba(255,255,255,0.12);
+backdrop-filter:blur(15px);
+box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+
+.small-text{
+font-size:12px;
+opacity:0.9;
+margin-top:5px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:18px;
+border:none;
+border-radius:25px;
+text-align:center;
+font-size:15px;
+outline:none;
+}
+
+button{
+padding:8px 20px;
+border:none;
+border-radius:20px;
+font-size:13px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.yes-btn{
+background:white;
+color:#c84a56;
+font-weight:600;
+box-shadow:0 0 15px rgba(255,255,255,0.7);
+}
+
+.yes-btn:hover{
+background:#94a7f3;
+color:rgb(172, 54, 204);
+transform:scale(1.05);
+}
+
+.no-btn{
+background:#eee;
+color:#48a8ab;
+position:relative;
+}
+
+.buttons{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:15px;
+margin-top:20px;
+position:relative;
+}
+
+/* Typewriter */
+.typewriter{
+min-height:40px;
+margin-top:15px;
+}
+
+/* Couple Emoji */
+.couple-emoji{
+font-size:50px;
+margin-top:20px;
+animation:pop 0.8s ease;
+}
+
+/* Floating Hearts */
+.heart{
+position:absolute;
+animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(0);opacity:1;}
+100%{transform:translateY(-100vh);opacity:0;}
+}
+
+/* Confetti */
+.confetti{
+position:absolute;
+width:8px;
+height:8px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+0%{transform:translateY(-10px);}
+100%{transform:translateY(100vh);}
+}
+
+/* Mobile */
+@media(max-width:480px){
+button{
+font-size:12px;
+padding:8px 16px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+<div class="card">
+<h2>🔐 Secret Love Page</h2>
+<div class="small-text">
+Hint: <strong>Mana Love Reveal Date (dd-mm-yyyy)</strong>
+</div>
+<input type="password" id="password" placeholder="dd-mm-yyyy">
+<button class="yes-btn" style="width:100%;margin-top:18px;" onclick="checkPassword()">Unlock ❤️</button>
+<p id="error" style="color:yellow;margin-top:10px;"></p>
+</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+<div class="card">
+<h2>Maradalu 💕</h2>
+<p class="typewriter" id="question"></p>
+
+<div class="buttons">
+<button class="yes-btn" onclick="goPage3()">YES 💖</button>
+<button class="no-btn" id="noBtn">NO 🙈</button>
+</div>
+</div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+<div class="card">
+<h2>YAYII... 🎉</h2><br>
+<p id="page3Text"></p>
+<button class="yes-btn" style="width:100%;margin-top:20px;" onclick="goPage4()">YES Forever ❤️</button>
+</div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+<div class="card">
+<h2>She Said YES 🥰 </h2><br>
+
+<!-- <p style="margin-top:20px; font-size:18px;"> -->
+<h4>Lavanya ❤️ Gopalakrishna 💖<br><br>
+Bava ❤️ Maradalu Forever
+</h4>
+
+<div class="couple-emoji">💍👩‍❤️‍👨</div>
+</div>
+</div>
+
+<script>
+const correctPassword="04-04-2021";
+
+function showPage(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+}
+
+function checkPassword(){
+if(document.getElementById("password").value.trim()===correctPassword){
+showPage("page2");
+typeWriter();
+}else{
+document.getElementById("error").innerText="Wrong date 🙈 Try again!";
+}
+}
+
+/* Typewriter for Page 2 */
+let text="Nuvvu naa Valentine avuthava? ❤️";
+let i=0;
+function typeWriter(){
+if(i<text.length){
+document.getElementById("question").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typeWriter,50);
+}
+}
+
+/* YES button Page 3 */
+function goPage3(){
+showPage("page3");
+startHearts();
+
+// Show "Yayiii... 🎉" instantly
+document.getElementById("page3Text").innerHTML = "Maradalu...❤️ ";
+
+// Typewrite the rest
+let restText = "Na jeevitha prayanamlo neevu naa pakkana untavani korukuntunnanu 😊 Nuvvu naa wife material… nenu nee husband material 💕";
+let k=0;
+function typeRest(){
+    if(k < restText.length){
+        document.getElementById("page3Text").innerHTML += restText.charAt(k);
+        k++;
+        setTimeout(typeRest,40);
+    }
+}
+typeRest();
+}
+
+/* YES button Page 4 */
+function goPage4(){
+showPage("page4");
+launchConfetti();
+}
+
+/* Moving NO Button */
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+let x=Math.random()*150-75;
+let y=Math.random()*80-40;
+noBtn.style.transform=`translate(${x}px,${y}px)`;
+});
+
+/* Hearts */
+let heartInterval;
+function startHearts(){
+clearInterval(heartInterval);
+heartInterval=setInterval(()=>{
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"%";
+heart.style.bottom="0px";
+heart.style.fontSize=(Math.random()*20+15)+"px";
+heart.style.animationDuration=(Math.random()*3+2)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),5000);
+},400);
+}
+
+/* Confetti */
+function launchConfetti(){
+for(let i=0;i<60;i++){
+let conf=document.createElement("div");
+conf.className="confetti";
+conf.style.left=Math.random()*100+"%";
+conf.style.backgroundColor=`hsl(${Math.random()*360},100%,50%)`;
+conf.style.animationDuration=(Math.random()*2+2)+"s";
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),3000);
+}
+}
+</script>
+
+</body>
+</html>
